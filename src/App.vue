@@ -1,23 +1,20 @@
+<!-- You cannot use delete as a variable name because delete is a reserved word in JavaScript. Also, Vue.js will throw a compile error on the reserved word. -->
 <template>
   <div id="app">
     <form action="" @submit.prevent="submit($event)">
       <p v-for="(item, index) in elems" :key="index">
-        <input
-          type="text"
-          :class="{
-            /* you can replace this with a function if you like */
-            'form-group--error': null /* these is the state class for error */,
-            'form-group--success': null /* these is the state class for success */,
-          }"
-          v-model="item.value"
-        />
-        <button type="button">delete</button>
+        <input type="text" :class="{
+          'form-group--error': item.valid == 0 || (firstField == -1 && secondField != -1 && item.value == '') || (item.valid == 1 && item.value == ''),
+          'form-group--success': item.valid == 1 && item.value != '',
+        }" v-model="item.value" required @focus="recordFocus(index)" />
+        <span v-if="item.error">Please enter a value.</span>
+        <button @click="remove(index)" type="button">delete</button>
       </p>
       <br />
       <div>
         <button @click="add" type="button" class="btn-primary edit">Add</button>
         &nbsp;
-        <button type="submit" class="btn-primary edit">Submit</button>
+        <button @click="formSubmitted = 1;" type="submit" class="btn-primary edit">Submit</button>
       </div>
     </form>
   </div>
@@ -25,19 +22,16 @@
 
 <script>
 /**
- * This example uses vuelidate for validation
- * http://vuelidate.js.org/
- *
  * REQUIREMENTS:
  *
- * 1. Implement the "add" and "delete" functionality
- * 2. Make the text input fields required by adding
- * validation rules for the `value` attribute of each elements
- * 3. On submit, vaidate the form and show an alert
- * with the message "Success" (if the form is valid)
- * or "Form not valid"
- * 4. Make the text input elements reflect their state (error/succes)
- * when the user tries to submit the form
+ ** 1. Implement the "add" and "delete" functionality
+ ** 2. Make the text input fields required by adding
+ ** validation rules for the `value` attribute of each elements
+ ** 3. On submit, vaidate the form and show an alert
+ ** with the message "Success" (if the form is valid)
+ ** or "Form not valid"
+ ** 4. Make the text input elements reflect their state (error/succes)
+ ** when the user tries to submit the form
  *
  * BONUS POINT A:
  * Make the text input elements change their state
@@ -58,37 +52,65 @@
  *
  * BONUS POINT B:
  * Require that the first element in the list to be exactly "abc"
- *
- *
+ * 
+ * ! (What about a string that's different to 'abc'? should it be ignored or treated as incorrect (similar to empty))\
+ * ! IF YES, replace input (line 6-10) with this:
+ *     <input type="text" :class="{
+          'form-group--error': item.valid == 0 || (firstField == -1 && secondField != -1 && item.value !== 'abc') || (item.valid == 1 && item.value !== 'abc'),
+          'form-group--success': item.valid == 1 && item.value === 'abc',
+        }" v-model="item.value" required @focus="recordFocus(index)" />
  *
  */
 
-import { required } from "vuelidate/lib/validators";
 export default {
   name: "App",
   data() {
     return {
+      firstField: -1,
+      secondField: -1,
       elems: [
         {
           value: "",
+          valid: -1,
         },
         {
           value: "",
+          valid: -1,
         },
       ],
-    };
-  },
-  validations() {
-    return {
-      elems: {},
+      formSubmitted: false,
     };
   },
   methods: {
-    submit: function () {},
+    submit: function () { this.formSubmitted = true; },
     add: function () {
+      this.elems.push({ value: "", valid: -1 })
       console.log("add");
     },
-    delete: function () {},
+    remove: function (index) {
+      this.elems.splice(index, 1);
+    },
+    recordFocus(index) {
+
+      if (this.firstField === -1) {
+        //1st click -> first element index
+        this.firstField = index;
+      }
+      else if (this.secondField === -1) {
+        // 2nd click -> second element index
+        this.secondField = index;
+      } else {
+        // 3rd click -> reset 
+        this.firstField = -1;
+        this.secondField = -1;
+      }
+
+      if (this.firstField !== -1 && this.secondField !== -1)
+        if (this.elems[this.firstField].value === "")
+          this.elems[this.firstField].valid = 0;
+        else
+          this.elems[this.firstField].valid = 1;
+    }
   },
 };
 </script>
@@ -102,12 +124,15 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 .form-group--error {
   border: 1px solid red;
 }
+
 .form-group--success {
   border: 1px solid green;
 }
+
 .pair {
   display: flex;
   grid-gap: 16px;
