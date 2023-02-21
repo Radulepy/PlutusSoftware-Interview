@@ -22,6 +22,7 @@ function getMarketplacesStatuses()
 }
 
 /*
+TASK 2: Refactor Code:
 
 function getMarketplacesStatuses() {
   $result = [];
