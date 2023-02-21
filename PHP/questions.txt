@@ -13,25 +13,24 @@
 
 Answers:
 
-1) For smalelr projects it's to big of a husstle. On some smaller projects I prefer NOT to use Laravel/Symphony. Overwhelming, you have to search and read a lot of 
+1) For smaller projects, it's too big of a hustle. On some smaller projects, I prefer NOT to use Laravel/Symphony. Overwhelming, you have to search and read a lot of 
 documentation if you want to know exactly the best route to take for the development process. Pretty difficult deployment, somewhat very different from plain PHP 
-(sintax point of view). A little old perhaps for the rapid development of the Backend technologies.
+(Syntax point of view). A little old perhaps for the rapid development of the Backend technologies.
 
 2) Very easy to create API applications (create a Model, add the Route and Controller in api.php and that's it ). It has a lot of packages like Socialite to include and
 to ease the development. Easy to create MVC patterns
 
-3) The register() method is used to register the classes or interfaces to the service container while the boot() function is used to perform the afterwards setup
-(I.e creating the routes )
+3) The register() method is used to register the classes or interfaces to the service container, while the boot() function is used to perform the afterward setup
+(I.e. creating the routes )
 
-4) For example when needed to create custom validation rules that are not available via validators.
+4) For example, when needed to create custom validation rules that are not available via validators.
 
 5)  I have used Socialite for a smaller client to authenticate via Social Media. Passport for Bear Authorization token and that's it
 
-6) Segregate Database classes so you can use more DBMS (like MySQL or Postrgres).
+6) Segregate Database classes, so you can use more DBMS (like MySQL or Postgres).
 
-7) Easier to scale and cleaner development I guess. 
+7) Easier to scale and cleaner development, I guess. 
 
-Disclaimer: (I DONT'T SUCH A BIG EXPERIENCE WITH LARAVEL) but I can always adapt and learn more ;)
-
+Disclaimer: (I DO NOT HAVE SUCH A BIG EXPERIENCE WITH LARAVEL) but I can always adapt and learn more ;)
 
  */
