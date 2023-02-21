@@ -1,2 +1,7 @@
 # PlutusSoftware-Interview
-Created with CodeSandbox
+Forked from CodeSandbox
+
+# CHECK THE PHP FOLDER 
+
+`npm install`
+`npm run serve`
